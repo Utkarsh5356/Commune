@@ -8,6 +8,7 @@ export default function SignUpInput(){
     const [password,setPassword]=useState('')
     const [username,setUsername]=useState('')
     const [userData,setUserData]=useState({})
+    console.log(auth.currentUser?.uid)
     const navigate=useNavigate()
     const signUp=async ()=>{
      try{

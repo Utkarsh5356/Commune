@@ -1,18 +1,18 @@
-import { BrowserRouter,Routes,Route } from "react-router-dom"
+import { Routes,Route } from "react-router-dom"
 import Home from "./pages/home"
-import SignUp from "./pages/signup"
-import SignIn from "./pages/singin"
+import Signup from "./pages/signup"
+import Signin from "./pages/singin"
 
 function App() {
   return (
     <div className="min-h-screen">
-       <BrowserRouter>
+    
          <Routes>
             <Route path={"/"} element={<Home/>}/>
-            <Route path={"/signup"} element={<SignUp/>}/>
-            <Route path={"/signin"} element={<SignIn/>}/>
+            <Route path={"/signup"} element={<Signup/>}/>
+            <Route path={"/signin"} element={<Signin/>}/>
          </Routes>
-       </BrowserRouter>
+
     </div>
   )
 }
