@@ -1,9 +1,11 @@
-import { SignUp } from "@clerk/react-router"
+import SignUpInput from "@/components/signupinput"
+
 
 export default function Signup(){
+    
     return (
-    <div>
-       <SignUp></SignUp>
-    </div>
+     <div className="flex justify-center h-screen items-center">
+        <SignUpInput/>
+     </div>
     )
 }

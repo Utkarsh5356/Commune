@@ -1,9 +1,8 @@
-import { UserButton } from "@clerk/clerk-react"
 
 export default function Home(){
     return (
         <div className="">
-            <UserButton></UserButton>
+            Welcone to Landing Page
         </div>
     )
 }
