@@ -1,15 +1,66 @@
 import { Card } from "./ui/card"
+import {InputOTP,InputOTPGroup,InputOTPSlot} from "./ui/input-otp"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import Label from "./ui/label"
-import { Link } from "react-router"
+import { Link,useNavigate } from "react-router"
 import { useState } from "react"
+import { useSignUp } from "@clerk/clerk-react"
 
 export default function SignUpInput(){
-  const [showPassword,setShowPassword]=useState(false)  
+  const {isLoaded,signUp,setActive} = useSignUp()
+  const [pendingVerification,setPendingVerification]=useState(false)
+  const [code,setCode]=useState("")
+  const [error,setError]=useState("")
+  const [username,setUsername] = useState("")
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+  const [showPassword,setShowPassword] = useState(false) 
+  const navigate=useNavigate() 
+  console.log(code)
+  if(!isLoaded) return null
+
+  async function submit(){
+    if(!isLoaded) return null
+    try{
+      await signUp.create({
+        emailAddress:email,
+        password
+      })
+      await signUp.prepareEmailAddressVerification({
+        strategy : "email_code"
+      })
+      setPendingVerification(true)
+    }catch(err:any){
+      console.log(JSON.stringify(err))
+      setError(err.errors[0].message)
+    }
+  }
+
+  async function onPressVerify(){
+    if(!isLoaded) return null
+
+    try{
+     const completeSignup=await signUp.attemptEmailAddressVerification({code})
+     if(completeSignup.status !== "complete"){
+      console.log(JSON.stringify(completeSignup))
+     }
+     if(completeSignup.status === "complete"){
+      console.log(JSON.stringify(completeSignup))
+      await setActive({
+        session:completeSignup.createdSessionId
+      })
+      navigate("/channels")
+     }
+    }catch(err:any){
+     console.log(JSON.stringify(err))
+     setError(err.errors[0].message)
+    }
+  }
     return (
      <Card className="w-full max-w-sm">
-       <div className="text-gray-800 text-xl text-center font-bold tracking-tight">
+     {!pendingVerification ? <>
+        <div className="text-gray-800 text-xl text-center font-bold tracking-tight">
           Create your account
        </div>
        <div className="text-center text-sm text-slate-500 font-normal tracking-tight -mt-4">
@@ -28,12 +79,12 @@ export default function SignUpInput(){
        </div>
        <div className="px-7 -mt-6">
         <Label label={"User name"}/>
-        <Input className="text-sm text-gray-800"></Input>
+        <Input value={username} onChange={(e)=>setUsername(e.target.value)} className="text-sm text-gray-800"></Input>
         <Label label={"Email address"}/>
-        <Input className="text-sm text-gray-800 "></Input>
+        <Input value={email} onChange={(e)=>setEmail(e.target.value)} className="text-sm text-gray-800 "></Input>
         <Label label={"Password"}/>
         <div className="relative">
-         <Input type={showPassword ? "text" : "password"} className="text-sm text-gray-800 pr-13"></Input>
+         <Input value={password} onChange={(e)=>setPassword(e.target.value)} type={showPassword ? "text" : "password"} className="text-sm text-gray-800 pr-13"></Input>
           <div onClick={()=>setShowPassword(!showPassword)} className="cursor-pointer">
             {showPassword ? <svg className="absolute top-3.5 left-66 h-5" width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
              <path d="M12 16.01C14.2091 16.01 16 14.2191 16 12.01C16 9.80087 14.2091 8.01001 12 8.01001C9.79086 8.01001 8 9.80087 8 12.01C8 14.2191 9.79086 16.01 12 16.01Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M2 11.98C8.09 1.31996 15.91 1.32996 22 11.98" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M22 12.01C15.91 22.67 8.09 22.66 2 12.01" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> 
@@ -45,13 +96,33 @@ export default function SignUpInput(){
        </div>
        </div>
        <div className="flex justify-center mt-3">
-        <Button className="px-33 h-8">
+        <Button onClick={submit} className="px-33 h-8">
           Continue
         </Button>
        </div>
        <div className="flex justify-center -mt-3">
         <div className="text-sm text-gray-500">Already have an account? <Link to={"/signin"} className="underline">Sign in</Link></div>
        </div>
+      </> :
+      <>
+       <div className="flex justify-center">
+         <InputOTP maxLength={6} value={code} onChange={(e)=>setCode(e)}>
+          <InputOTPGroup>
+           <InputOTPSlot index={1}></InputOTPSlot>
+           <InputOTPSlot index={2}></InputOTPSlot>
+           <InputOTPSlot index={3}></InputOTPSlot>
+           <InputOTPSlot index={4}></InputOTPSlot>
+           <InputOTPSlot index={5}></InputOTPSlot>
+           <InputOTPSlot index={6}></InputOTPSlot>
+          </InputOTPGroup>
+         </InputOTP>
+       </div>
+       <div>
+        <Button onClick={onPressVerify}>Submit</Button>
+       </div>
+        
+      </>
+      }
      </Card>
     )
 }
