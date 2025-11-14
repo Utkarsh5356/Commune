@@ -24,6 +24,7 @@ export default function SignUpInput(){
     if(!isLoaded) return null
     try{
       await signUp.create({
+        username,
         emailAddress:email,
         password
       })
@@ -46,11 +47,12 @@ export default function SignUpInput(){
       console.log(JSON.stringify(completeSignup))
      }
      if(completeSignup.status === "complete"){
-      console.log(JSON.stringify(completeSignup))
+      console.log(JSON.stringify(completeSignup)) 
+      navigate("/channels")
       await setActive({
         session:completeSignup.createdSessionId
       })
-      navigate("/channels")
+     
      }
     }catch(err:any){
      console.log(JSON.stringify(err))
@@ -105,22 +107,33 @@ export default function SignUpInput(){
        </div>
       </> :
       <>
-       <div className="flex justify-center">
-         <InputOTP maxLength={6} value={code} onChange={(e)=>setCode(e)}>
+       <div className="px-5">
+        <div className="text-2xl font-semibold">
+          OTP verification
+        </div> 
+        <div className="text-xs text-gray-500 mt-1">
+          Please enter the OTP (One-Time-Password) sent to your
+          registered email to complete your verification.
+        </div>
+       </div>
+       <div>
+
+       </div>     
+       <div className="flex justify-center -mt-4">
+         <InputOTP maxLength={6} value={code} onChange={(value)=>setCode(value)}>
           <InputOTPGroup>
+           <InputOTPSlot index={0}></InputOTPSlot>
            <InputOTPSlot index={1}></InputOTPSlot>
            <InputOTPSlot index={2}></InputOTPSlot>
            <InputOTPSlot index={3}></InputOTPSlot>
            <InputOTPSlot index={4}></InputOTPSlot>
            <InputOTPSlot index={5}></InputOTPSlot>
-           <InputOTPSlot index={6}></InputOTPSlot>
           </InputOTPGroup>
          </InputOTP>
        </div>
-       <div>
+       <div className="flex justify-center">
         <Button onClick={onPressVerify}>Submit</Button>
        </div>
-        
       </>
       }
      </Card>
