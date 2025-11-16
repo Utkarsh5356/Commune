@@ -4,8 +4,10 @@ import { Input } from "./ui/input"
 import Label from "./ui/label"
 import { Link } from "react-router"
 import { useState } from "react"
+import { useSignIn } from "@clerk/react-router"
 
 export default function SignInInput(){
+  // const {isLoaded,setActive,signIn}=useSignIn()
   const [showPassword,setShowPassword]=useState(false)
     return (
      <Card className="w-full max-w-sm">

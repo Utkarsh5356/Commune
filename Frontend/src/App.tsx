@@ -3,6 +3,7 @@ import Home from "./pages/home"
 import Signup from "./pages/signup"
 import Signin from "./pages/singin"
 import Channels from "./pages/channels"
+import { AuthenticateWithRedirectCallback } from "@clerk/clerk-react"
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path={"/signup"} element={<Signup/>}/>
       <Route path={"/signin"} element={<Signin/>}/>
       <Route path={"/channels"} element={<Channels/>}></Route>
+      <Route path={"/sso-callback"} element={<AuthenticateWithRedirectCallback continueSignUpUrl={"/channels"}/>}></Route>
      </Routes>
    </div>
   )
