@@ -66,7 +66,6 @@ export default function SignInInput(){
      console.log(err)
     }
   }
-  
   return (
      <Card className="w-full max-w-sm">
       {!pendingVerification ? 
