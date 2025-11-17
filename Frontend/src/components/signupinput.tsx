@@ -5,8 +5,7 @@ import { Input } from "./ui/input"
 import Label from "./ui/label"
 import { Link,useNavigate } from "react-router"
 import { useState } from "react"
-import { AuthenticateWithRedirectCallback, useSignUp } from "@clerk/clerk-react"
-import Signup from "@/pages/signup"
+import { useSignUp } from "@clerk/react-router"
 
 export default function SignUpInput(){
   const {isLoaded,signUp,setActive} = useSignUp()
@@ -19,6 +18,7 @@ export default function SignUpInput(){
   const [showPassword,setShowPassword] = useState(false) 
   const navigate=useNavigate() 
   console.log(code)
+  
   if(!isLoaded) return <>Loading....</>
    
   async function submit(){
@@ -44,7 +44,7 @@ export default function SignUpInput(){
     try{
      const completeSignup=await signUp.attemptEmailAddressVerification({code})
      if(completeSignup.status !== "complete"){
-      console.log(JSON.stringify(completeSignup))
+      console.log(completeSignup)
      }
      if(completeSignup.status === "complete"){
       console.log(completeSignup) 
@@ -61,10 +61,10 @@ export default function SignUpInput(){
 
   async function googleSignIn(){
     try{
-     await signUp?.authenticateWithRedirect({
+      await signUp?.authenticateWithRedirect({
       strategy:'oauth_google',
       redirectUrl:'/sso-callback',
-      redirectUrlComplete:'/channels'
+      redirectUrlComplete:'/channels',
      })
     }catch(err:any){
       console.log(err)

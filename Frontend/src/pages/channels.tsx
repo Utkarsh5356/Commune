@@ -1,4 +1,4 @@
-import { UserButton,SignedIn } from "@clerk/clerk-react"
+import { UserButton,SignedIn } from "@clerk/react-router"
 
 export default function Channels(){
     return (

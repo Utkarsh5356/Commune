@@ -13,7 +13,7 @@ function App() {
       <Route path={"/signup"} element={<Signup/>}/>
       <Route path={"/signin"} element={<Signin/>}/>
       <Route path={"/channels"} element={<Channels/>}></Route>
-      <Route path={"/sso-callback"} element={<AuthenticateWithRedirectCallback continueSignUpUrl={"/channels"}/>}></Route>
+      <Route path={"/sso-callback"} element={<AuthenticateWithRedirectCallback/> }></Route>
      </Routes>
    </div>
   )
