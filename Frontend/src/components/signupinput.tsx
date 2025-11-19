@@ -3,6 +3,7 @@ import {InputOTP,InputOTPGroup,InputOTPSlot} from "./ui/input-otp"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import Label from "./ui/label"
+import Loader from "./ui/loader"
 import { Link,useNavigate } from "react-router"
 import { useState } from "react"
 import { useSignUp } from "@clerk/react-router"
@@ -19,10 +20,10 @@ export default function SignUpInput(){
   const navigate=useNavigate() 
   console.log(code)
   
-  if(!isLoaded) return <>Loading....</>
+  if(!isLoaded) return <Loader/>
    
   async function submit(){
-    if(!isLoaded) return <>Loading...</>
+    if(!isLoaded) return null
     try{
       await signUp.create({
         username,
@@ -40,7 +41,7 @@ export default function SignUpInput(){
   }
 
   async function onPressVerify(){
-    if(!isLoaded) return <>Loading...</>
+    if(!isLoaded) return null
     try{
      const completeSignup=await signUp.attemptEmailAddressVerification({code})
      if(completeSignup.status !== "complete"){
@@ -60,8 +61,9 @@ export default function SignUpInput(){
   }
 
   async function googleSignIn(){
+    if(!isLoaded) return null
     try{
-      await signUp?.authenticateWithRedirect({
+      await signUp.authenticateWithRedirect({
       strategy:'oauth_google',
       redirectUrl:'/sso-callback',
       redirectUrlComplete:'/channels',

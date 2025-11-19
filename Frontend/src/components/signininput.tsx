@@ -3,6 +3,7 @@ import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import {InputOTP,InputOTPGroup,InputOTPSlot} from "./ui/input-otp"
 import Label from "./ui/label"
+import Loader from "./ui/loader"
 import { Link,useNavigate } from "react-router"
 import { useState } from "react"
 import { useSignIn } from "@clerk/react-router"
@@ -15,10 +16,10 @@ export default function SignInInput(){
   const [pendingVerification,setPendingVerification]=useState(false)
   const navigate=useNavigate()
    
-  if(!isLoaded) return <>Loading...</>
+  if(!isLoaded) return <Loader/>
 
   async function submit(){
-    if(!isLoaded) return <>Loading...</>
+    if(!isLoaded) return null
     try{
      await signIn.create({
       strategy:"email_code", 
@@ -32,7 +33,7 @@ export default function SignInInput(){
   } 
  
   async function onPressVerify(){
-    if(!isLoaded) return <>Loading...</>
+    if(!isLoaded) return null
     try{
       const completesignIn=await signIn.attemptFirstFactor({
       strategy:"email_code",
@@ -55,14 +56,14 @@ export default function SignInInput(){
   }
 
   async function googleSignIn(){
-    if(!isLoaded) return <>Loading...</>
+    if(!isLoaded) return null
     try{
      await signIn.authenticateWithRedirect({
       strategy:"oauth_google",
       redirectUrl:"/sso-callback",
       redirectUrlComplete:"/channels"
     })
-    }catch(err:any){
+    }catch(err){
      console.log(err)
     }
   }
