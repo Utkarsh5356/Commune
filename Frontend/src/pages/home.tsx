@@ -1,8 +1,17 @@
+import { ModeToggle } from "@/components/modeToggle"
 
 export default function Home(){
     return (
         <div className="">
-            Welcone to Landing Page
+         <div className="flex justify-between">
+          <div>
+           Welcone to Landing Page
+          </div>
+          <div>
+            <ModeToggle></ModeToggle>
+          </div>
+         </div>
+            
         </div>
     )
 }

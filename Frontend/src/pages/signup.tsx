@@ -1,6 +1,5 @@
 import SignUpInput from "@/components/signupinput"
 
-
 export default function Signup(){
     
     return (
