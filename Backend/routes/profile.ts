@@ -12,7 +12,7 @@ try{
         userId:data.id,
         name:data.name,
         imageUrl:data.imageUrl,
-        email:data.emailAddress
+        email:data.email
      }
    })
    if(!user) return res.status(403).json({err:"invalid inputs"})
