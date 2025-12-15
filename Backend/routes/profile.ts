@@ -3,9 +3,16 @@ import { db } from "../lib/prismaclient.js";
 
 export const profile=Router()
 
+interface DataType {
+ id:string,
+ name:string,
+ imageUrl:string,
+ email:string
+}
+
 profile.post("/create",async (req,res)=>{
 try{
-  const data=req.body;
+  const data:DataType=req.body;
   if(!data) res.status(401).json({err:"you're not authorized"})
   const user=await db.profile.create({
      data:{
