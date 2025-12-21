@@ -29,5 +29,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "root.tsx", "root.tsx"]
+  "include": ["src", "root.tsx", "root.tsx", "hooks/initiateProfile.ts"]
 }
