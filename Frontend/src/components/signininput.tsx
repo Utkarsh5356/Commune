@@ -6,16 +6,18 @@ import Label from "./ui/label"
 import Loader from "./ui/loader"
 import { Link,useNavigate } from "react-router"
 import { useState } from "react"
-import { useSignIn } from "@clerk/react-router"
+import { useSignIn,useUser } from "@clerk/react-router"
 
 export default function SignInInput(){
   const {isLoaded,setActive,signIn}=useSignIn()
+  const {isSignedIn}=useUser()
   const [email,setEmail]=useState("")
   const [error,setError]=useState("")
   const [code,setCode]=useState("")
   const [pendingVerification,setPendingVerification]=useState(false)
   const navigate=useNavigate()
-   
+    
+  if(isSignedIn) navigate("/channels")
   if(!isLoaded) return <Loader/>
 
   async function submit(){

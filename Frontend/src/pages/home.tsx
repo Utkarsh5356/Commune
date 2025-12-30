@@ -1,17 +1,13 @@
-import { ModeToggle } from "@/components/modeToggle"
+import { SignInButton,SignUpButton } from "@clerk/clerk-react"
 
 export default function Home(){
     return (
         <div className="">
-         <div className="flex justify-between">
           <div>
            Welcone to Landing Page
+           <SignUpButton></SignUpButton>
+           <SignInButton></SignInButton>
           </div>
-          <div>
-            <ModeToggle></ModeToggle>
-          </div>
-         </div>
-            
         </div>
     )
 }

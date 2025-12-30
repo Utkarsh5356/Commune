@@ -4,7 +4,6 @@ import './index.css'
 import App from './App.tsx'
 import { ClerkProvider } from '@clerk/react-router'
 import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from './components/themeProvider.tsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 if (!PUBLISHABLE_KEY) {
@@ -13,12 +12,10 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById('root')!).render(
  <StrictMode>
-  <ThemeProvider defaultTheme='system' storageKey='vite-ui-theme'>
     <BrowserRouter>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl={"/"} signUpForceRedirectUrl={"/channels"} signInForceRedirectUrl={"/channels"}>
         <App />
       </ClerkProvider> 
     </BrowserRouter>
-  </ThemeProvider>
  </StrictMode>
 )
