@@ -1,7 +1,6 @@
 import {useState} from "react"
 import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react"
 import { NavUser } from '@/components/nav-user'
-import { useInitiateProfile } from "../../hooks/initiateProfile"
 import { 
   Sidebar,
   SidebarContent,
@@ -53,19 +52,10 @@ const data = {
   
 }
 
-interface Profile {
-   userId:string
-   name:string,
-   imageUrl:string,
-   email:string
-}
-
 export const AppSidebar=()=>{
-const profile=useInitiateProfile() as Profile | null
 const [activeItem, setActiveItem] = useState(data.navMain[0])
 const [] =useState()
 const { setOpen } = useSidebar() 
-console.log(profile?.name)
 return (
   <div>
    <Sidebar
