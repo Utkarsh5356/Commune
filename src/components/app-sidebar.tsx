@@ -1,4 +1,4 @@
-import {useState, type ComponentProps} from "react"
+import {useState} from "react"
 import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react"
 import { NavUser } from '@/components/nav-user'
 import { useInitiateProfile } from "../../hooks/initiateProfile"
