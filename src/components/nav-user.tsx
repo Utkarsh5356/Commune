@@ -9,7 +9,6 @@ import {
 
 import {
   Avatar,
-  AvatarFallback,
   AvatarImage,
 } from './ui/avatar'
 import {
@@ -28,6 +27,8 @@ import {
   useSidebar,
 } from './ui/sidebar'
 import { useInitiateProfile } from "../../hooks/initiateProfile"
+import { SignOutButton,useClerk} from "@clerk/clerk-react"
+
 
 interface Profile {
    userId:string
@@ -38,10 +39,11 @@ interface Profile {
 
 export const NavUser=()=>{
 const profile=useInitiateProfile() as Profile | null
+const{openUserProfile}=useClerk()
 const { isMobile } = useSidebar()
 return (
     <div>
-       <SidebarMenu>
+      <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -49,9 +51,8 @@ return (
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="h-8 w-8 rounded-lg cursor-pointer">
                 <AvatarImage src={profile?.imageUrl} alt={profile?.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{profile?.name}</span>
@@ -66,11 +67,10 @@ return (
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
+            <DropdownMenuLabel onClick={()=>openUserProfile()} className="p-0 font-normal cursor-pointer">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+                <Avatar className="rounded-2xl">
                   <AvatarImage src={profile?.imageUrl} alt={profile?.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{profile?.name}</span>
@@ -79,7 +79,7 @@ return (
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            <DropdownMenuGroup className="cursor-pointer">
               <DropdownMenuItem>
                 <Sparkles />
                 Upgrade to Pro
@@ -87,23 +87,23 @@ return (
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <CreditCard />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <Bell />
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
               <LogOut />
-              Log out
+              <SignOutButton>Log Out</SignOutButton>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
