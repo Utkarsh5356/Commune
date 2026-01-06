@@ -1,7 +1,6 @@
 import {
   BadgeCheck,
   Bell,
-  ChevronsUpDown,
   CreditCard,
   LogOut,
   Sparkles,
@@ -26,7 +25,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from './ui/sidebar'
-import { useInitiateProfile } from "../../hooks/initiateProfile"
+import { useInitiateProfile } from "../hooks/initiateProfile"
 import { SignOutButton,useClerk} from "@clerk/clerk-react"
 
 
@@ -54,11 +53,6 @@ return (
               <Avatar className="h-8 w-8 rounded-lg cursor-pointer">
                 <AvatarImage src={profile?.imageUrl} alt={profile?.name} />
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{profile?.name}</span>
-                <span className="truncate text-xs">{profile?.email}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -79,8 +73,8 @@ return (
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup className="cursor-pointer">
-              <DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="cursor-pointer">
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
