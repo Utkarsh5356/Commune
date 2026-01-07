@@ -1,9 +1,10 @@
 import {useState} from "react"
 import { useInitiateProfile } from "@/hooks/initiateProfile"
-import { ArchiveX, Command, File, Inbox, Send, Trash2, CirclePlus } from "lucide-react"
+import { ArchiveX, File, Inbox, Send, Trash2, CirclePlus } from "lucide-react"
 import { NavUser } from '@/components/nav-user'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
+import { Avatar,AvatarImage } from "./ui/avatar"
 import { 
   Sidebar,
   SidebarContent,
@@ -72,23 +73,30 @@ interface Profile {
 }
 
 export const AppSidebar=()=>{
-const [activeItem, setActiveItem] = useState(data.navMain[0])
+const [serverName,setServerName] = useState<string>()
 const profile=useInitiateProfile() as Profile | null
 return (
  <div className="flex h-screen">
-    <Sidebar collapsible="none">
+    <Sidebar collapsible="none" className="rounded-2xl">
         {/* LEFT: icon rail + second sidebar as flex children */}
         <div className="flex h-full">
           {/* Icon rail */}
-         <div className="w-[calc(var(--sidebar-width-icon)+1px)] border-r flex flex-col">
+         <div className="w-[calc(var(--sidebar-width-icon)+10px)] items-center border-r flex flex-col rounded-2xl">
            <SidebarHeader>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton size="lg" asChild className="md:h-8 md:p-0">
+                <SidebarMenuButton 
+                 size="lg" asChild 
+                 tooltip={{
+                  children:"Home",
+                  hidden: false,
+                 }}
+                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0 transform active:scale-110 transition-transform duration-100"
+                 >
                   <a href="http://localhost:5173/channels">
-                    <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                      <Command className="size-4" />
-                    </div>
+                      <Avatar className="rounded-lg">
+                        <AvatarImage src={profile?.imageUrl}/>
+                      </Avatar>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -106,10 +114,12 @@ return (
                           children: item.title,
                           hidden: false,
                         }}
-                        className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg cursor-pointer"
+                        className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg cursor-pointer transform active:scale-110 transition-transform duration-100"
                       >
                       {/* Icon image */}
-                        <item.icon />
+                       <Avatar className="rounded-lg">
+                         <AvatarImage src={profile?.imageUrl}/>
+                       </Avatar>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -117,15 +127,15 @@ return (
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <Dialog >
-            <form>
+          <Dialog>
+            <form className="mr-2">
             <DialogTrigger asChild>
              <SidebarMenuButton 
               tooltip={{
                children: "Add a Server",
                hidden: false,
               }}
-              className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center mt-1 ml-2 justify-center rounded-lg cursor-pointer"
+              className="bg-sidebar-foreground text-sidebar-primary-foreground flex aspect-square size-8 items-center mt-1 ml-2 justify-center rounded-lg cursor-pointer transform active:scale-110 transition-transform duration-100"
               >
              <CirclePlus/>
              </SidebarMenuButton>
@@ -139,10 +149,7 @@ return (
               </DialogHeader>
               <div className="grid gap-4">
                 <div className="grid gap-3">
-                  {/* <div className="mt-2">
-                    <div className="text-sm text-gray-700 font-semibold">Hello</div>
-                  </div> */}
-                  <Input  name="name" defaultValue={`${profile?.name} Server`} />
+                  <Input onChange={(e)=>setServerName(e.target.value)} name="name" placeholder={`${profile?.name} Server`} />
                 </div>
               </div>
               <DialogFooter>
@@ -162,7 +169,7 @@ return (
            <SidebarHeader className="gap-3.5 border-b p-4">
              <div className="flex w-full items-center justify-between">
               <div className="text-foreground text-base font-medium">
-                {activeItem?.title}
+                
               </div>
             </div>
             <SidebarInput className="w-65" placeholder="Type to search..." />
