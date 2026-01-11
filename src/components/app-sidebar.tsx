@@ -1,10 +1,12 @@
-import {useState} from "react"
 import { useInitiateProfile } from "@/hooks/initiateProfile"
 import { ArchiveX, File, Inbox, Send, Trash2, CirclePlus } from "lucide-react"
 import { NavUser } from '@/components/nav-user'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Avatar,AvatarImage } from "./ui/avatar"
+import {useForm} from "react-hook-form"
+import * as z from "zod"
+import {zodResolver} from "@hookform/resolvers/zod"
 import { 
   Sidebar,
   SidebarContent,
@@ -62,19 +64,33 @@ const data = {
       isActive: false,
     },
   ],
-  
 }
 
+const formSchema=z.object({
+  name:z.string().min(1,{message:"Server name is required"}),
+  imageUrl:z.string().min(1,{message:"Server image is required"})
+})
+
 interface Profile {
-   userId:string
-   name:string,
-   imageUrl:string,
-   email:String
+  userId:string,
+  name:string,
+  imageUrl:string,
+  email:String
 }
 
 export const AppSidebar=()=>{
-const [serverName,setServerName] = useState<string>()
 const profile=useInitiateProfile() as Profile | null
+const form=useForm({
+  resolver:zodResolver(formSchema),
+  defaultValues:{
+    name:"",
+    imageUrl:""
+  }
+})
+const isLoading = form.formState.isSubmitting
+const onSubmit = async(values:z.infer<typeof formSchema>)=>{
+  console.log(values)
+}
 return (
  <div className="flex h-screen">
     <Sidebar collapsible="none" className="rounded-2xl">
@@ -83,27 +99,27 @@ return (
           {/* Icon rail */}
          <div className="w-[calc(var(--sidebar-width-icon)+10px)] items-center border-r flex flex-col rounded-2xl">
            <SidebarHeader>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton 
-                 size="lg" asChild 
-                 tooltip={{
-                  children:"Home",
-                  hidden: false,
-                 }}
-                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0 transform active:scale-110 transition-transform duration-100"
-                 >
-                  <a href="http://localhost:5173/channels">
+             <SidebarMenu>
+               <SidebarMenuItem>
+                 <SidebarMenuButton 
+                  size="lg" asChild 
+                  tooltip={{
+                   children:"Home",
+                   hidden: false,
+                  }}
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0 transform active:scale-110 transition-transform duration-100"
+                  >
+                   <a href="http://localhost:5173/channels">
                       <Avatar className="rounded-lg">
                         <AvatarImage src={profile?.imageUrl}/>
                       </Avatar>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarHeader>
-          <Separator/>
-          <SidebarContent className="no-scrollbar overflow-y-auto ">
+                   </a>
+                 </SidebarMenuButton>
+               </SidebarMenuItem>
+             </SidebarMenu>
+           </SidebarHeader>
+           <Separator/>
+           <SidebarContent className="no-scrollbar overflow-y-auto ">
             <SidebarGroup>
               <SidebarGroupContent className="px-1.5 md:px-0">
                 <SidebarMenu>
@@ -128,37 +144,38 @@ return (
             </SidebarGroup>
           </SidebarContent>
           <Dialog>
-            <form className="mr-2">
-            <DialogTrigger asChild>
-             <SidebarMenuButton 
-              tooltip={{
-               children: "Add a Server",
-               hidden: false,
-              }}
-              className="bg-sidebar-foreground text-sidebar-primary-foreground flex aspect-square size-8 items-center mt-1 ml-2 justify-center rounded-lg cursor-pointer transform active:scale-110 transition-transform duration-100"
-              >
-             <CirclePlus/>
-             </SidebarMenuButton>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle className="text-center text-2xl font-bold">Create Your Server</DialogTitle>
-                <DialogDescription className="text-center">
-                  Your server is where your friends hang out. Make yours and start talking.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4">
+              <DialogTrigger asChild>
+               <SidebarMenuButton 
+                tooltip={{
+                 children: "Add a Server",
+                 hidden: false,
+                }}
+                className="bg-sidebar-foreground text-sidebar-primary-foreground flex aspect-square size-8 items-center mt-1 ml-2 justify-center rounded-lg cursor-pointer transform active:scale-110 transition-transform duration-100"
+                >
+               <CirclePlus/>
+               </SidebarMenuButton>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle className="text-center text-2xl font-bold">Create Your Server</DialogTitle>
+                  <DialogDescription className="text-center">
+                    Your server is where your friends hang out. Make yours and start talking.
+                  </DialogDescription>
+                </DialogHeader>
+              <form>
+               <div className="grid gap-4">
                 <div className="grid gap-3">
-                  <Input onChange={(e)=>setServerName(e.target.value)} name="name" placeholder={`${profile?.name} Server`} />
+                  <input type="file" accept=".jpg, .jpeg, image/jpeg"/>
+                  <Input name="name" placeholder={`${profile?.name} Server`} />
                 </div>
-              </div>
+               </div>
+              </form>
               <DialogFooter>
                 <DialogClose asChild>                
                   <Button type="submit">Create</Button>
                </DialogClose>
               </DialogFooter>
             </DialogContent>
-           </form>
           </Dialog>
           <SidebarFooter>
             <NavUser/>
