@@ -2,9 +2,9 @@ import { Card } from "./ui/card"
 import {InputOTP,InputOTPGroup,InputOTPSlot} from "./ui/input-otp"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
-import Label from "./ui/label"
+import {Label} from "./ui/label"
 import Loader from "./ui/loader"
-import { Link,useNavigate } from "react-router"
+import { Link,useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { useSignUp,useUser } from "@clerk/react-router"
 
@@ -94,11 +94,11 @@ export default function SignUpInput(){
          <span className="absolute px-3 text-sm font-medium -mt-1 text-gray-500 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">or</span>
        </div>
        <div className="px-7 -mt-6">
-        <Label label={"User name"}/>
+        <Label className="my-2">User Name</Label>
         <Input value={username} onChange={(e)=>setUsername(e.target.value)} className="text-sm text-gray-800"></Input>
-        <Label label={"Email address"}/>
+        <Label className="my-2">Email Address</Label>
         <Input value={email} onChange={(e)=>setEmail(e.target.value)} className="text-sm text-gray-800 "></Input>
-        <Label label={"Password"}/>
+        <Label className="my-2">Password</Label>
         <div className="relative">
          <Input value={password} onChange={(e)=>setPassword(e.target.value)} type={showPassword ? "text" : "password"} className="text-sm text-gray-800 pr-13"></Input>
           <div onClick={()=>setShowPassword(!showPassword)} className="cursor-pointer">

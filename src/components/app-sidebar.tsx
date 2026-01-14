@@ -3,10 +3,12 @@ import { ArchiveX, File, Inbox, Send, Trash2, CirclePlus } from "lucide-react"
 import { NavUser } from '@/components/nav-user'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
+import { Separator } from "./ui/separator"
 import { Avatar,AvatarImage } from "./ui/avatar"
 import {useForm} from "react-hook-form"
 import * as z from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
+import { ImageUpload } from "./imageUpload"
 import { 
   Sidebar,
   SidebarContent,
@@ -29,7 +31,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog"
-import { Separator } from "./ui/separator"
+import {
+  Form,
+  FormControl,
+  FormLabel,
+  FormField,
+  FormItem,
+  FormMessage
+} from "./ui/form"
 // This is sample data
 const data = {
   navMain: [
@@ -150,29 +159,68 @@ return (
                  children: "Add a Server",
                  hidden: false,
                 }}
-                className="bg-sidebar-foreground text-sidebar-primary-foreground flex aspect-square size-8 items-center mt-1 ml-2 justify-center rounded-lg cursor-pointer transform active:scale-110 transition-transform duration-100"
+                className="bg-sidebar-foreground text-sidebar-primary-foreground flex aspect-square size-8 items-center mt-1 ml-2 mr-2 justify-center rounded-lg cursor-pointer transform active:scale-110 transition-transform duration-100"
                 >
                <CirclePlus/>
                </SidebarMenuButton>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="sm:max-w-106.25">
                 <DialogHeader>
                   <DialogTitle className="text-center text-2xl font-bold">Create Your Server</DialogTitle>
                   <DialogDescription className="text-center">
                     Your server is where your friends hang out. Make yours and start talking.
                   </DialogDescription>
                 </DialogHeader>
-              <form>
-               <div className="grid gap-4">
-                <div className="grid gap-3">
-                  <input type="file" accept=".jpg, .jpeg, image/jpeg"/>
-                  <Input name="name" placeholder={`${profile?.name} Server`} />
-                </div>
-               </div>
-              </form>
-              <DialogFooter>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} 
+                  className="space-y-8"
+                  >
+                    <div className="space-y-8 px-6">
+                      <div className="flex items-center justify-center text-center">
+                        <FormField
+                          control={form.control}
+                          name="imageUrl"
+                          render={({field})=>(
+                            <FormItem>
+                               <FormControl>
+                                 <ImageUpload
+                                  value={field.value}
+                                  onChange={field.onChange}
+                                  disabled={isLoading}
+                                 />
+                               </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({field})=>(
+                          <FormItem>
+                            <FormLabel 
+                              className="uppercase text-xs font-bold text-zinc-500">
+                              Server Name
+                            </FormLabel>
+                            <FormControl>
+                              <Input 
+                               disabled={isLoading}
+                               className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black
+                               focus-visible:ring-offset-0"
+                               placeholder="Enter server name"
+                               {...field}
+                              />
+                            </FormControl>
+                            <FormMessage></FormMessage>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </form>
+                </Form>
+               <DialogFooter className="px-6">
                 <DialogClose asChild>                
-                  <Button type="submit">Create</Button>
+                  <Button variant="primary" type="submit">Create</Button>
                </DialogClose>
               </DialogFooter>
             </DialogContent>

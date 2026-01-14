@@ -2,9 +2,9 @@ import { Card } from "./ui/card"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import {InputOTP,InputOTPGroup,InputOTPSlot} from "./ui/input-otp"
-import Label from "./ui/label"
+import {Label} from "./ui/label"
 import Loader from "./ui/loader"
-import { Link,useNavigate } from "react-router"
+import { Link,useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { useSignIn,useUser } from "@clerk/react-router"
 
@@ -91,7 +91,7 @@ export default function SignInInput(){
          <span className="absolute px-3 text-sm font-medium -mt-1 text-gray-500 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">or</span>
        </div>
        <div className="px-7 -mt-6">
-        <Label label={"Email address"}/>
+        <Label className="my-2">Email Address</Label>
         <Input  value={email} onChange={(e)=>setEmail(e.target.value)} className="text-sm text-gray-800 font-normal"></Input>
        </div>
        <div className="flex justify-center mt-3">
@@ -100,7 +100,7 @@ export default function SignInInput(){
         </Button>
        </div>
        <div className="flex justify-center -mt-3">
-        <div className="text-sm text-gray-500">Don"t have an account? <Link to={"/signup"} className="underline">Sign up</Link></div>
+        <div className="text-sm text-gray-500">Don't have an account? <Link to={"/signup"} className="underline">Sign up</Link></div>
        </div>
       </>
         : 
