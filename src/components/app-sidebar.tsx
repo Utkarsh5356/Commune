@@ -1,4 +1,5 @@
 import { useInitiateProfile } from "@/hooks/initiateProfile"
+import { useCurrentProfile } from "@/hooks/currentProfile"
 import { ArchiveX, File, Inbox, Send, Trash2, CirclePlus } from "lucide-react"
 import { NavUser } from '@/components/nav-user'
 import { Button } from "./ui/button"
@@ -9,6 +10,8 @@ import {useForm} from "react-hook-form"
 import * as z from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
 import { ImageUpload } from "./imageUpload"
+import { useNavigate } from "react-router"
+import axios from "axios"
 import { 
   Sidebar,
   SidebarContent,
@@ -89,6 +92,9 @@ interface Profile {
 
 export const AppSidebar=()=>{
 const profile=useInitiateProfile() as Profile | null
+const currentProfile=useCurrentProfile()
+console.log(currentProfile);
+const navigate=useNavigate()
 const form=useForm({
   resolver:zodResolver(formSchema),
   defaultValues:{
@@ -98,7 +104,13 @@ const form=useForm({
 })
 const isLoading = form.formState.isSubmitting
 const onSubmit = async(values:z.infer<typeof formSchema>)=>{
-  console.log(values)
+  try{
+    axios.post("",values)
+    form.reset()
+    window.location.reload()
+  }catch(err){
+   console.log(err);
+  }
 }
 return (
  <div className="flex h-screen">
@@ -189,7 +201,8 @@ return (
                                   disabled={isLoading}
                                  />
                                </FormControl>
-                            </FormItem>
+                               <FormMessage className="w-24"/>
+                             </FormItem>
                           )}
                         />
                       </div>
@@ -211,19 +224,19 @@ return (
                                {...field}
                               />
                             </FormControl>
-                            <FormMessage></FormMessage>
+                            <FormMessage/>
                           </FormItem>
                         )}
                       />
                     </div>
+                    <DialogFooter className="px-6">
+                     {/* <DialogClose asChild>                 */}
+                       <Button variant="primary" type="submit" disabled={isLoading}>Create</Button>
+                     {/* </DialogClose> */}
+                   </DialogFooter>
                   </form>
                 </Form>
-               <DialogFooter className="px-6">
-                <DialogClose asChild>                
-                  <Button variant="primary" type="submit">Create</Button>
-               </DialogClose>
-              </DialogFooter>
-            </DialogContent>
+              </DialogContent>
           </Dialog>
           <SidebarFooter>
             <NavUser/>
