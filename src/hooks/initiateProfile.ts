@@ -35,7 +35,7 @@ export const useInitiateProfile=()=>{
     const getUserData=async ()=>{
     if(!user || !isLoaded) return 
       try{
-      await axios.post<profileResponse>("http://localhost:3000/api/v1/profile/create",{
+      await axios.post<profileResponse>("http://localhost:3000/api/v1/profile/upsert",{
         id:user.id,
         name:user.username === null ? user.fullName : user.username,
         imageUrl:user.imageUrl,
@@ -47,23 +47,6 @@ export const useInitiateProfile=()=>{
     }
     getUserData()
   },[user,isLoaded])
-
-  useEffect(()=>{
-    const getUpdatedUserData = async()=>{
-      if(!user || !isLoaded ) return
-      try{
-        await axios.put<profileResponse>("http://localhost:3000/api/v1/profile/update",{
-          id:user.id,
-          name:user.username === null ? user.fullName : user.username,
-          imageUrl:user.imageUrl,
-          email:user.emailAddresses[0].emailAddress
-        })
-      }catch(err){
-       console.error(err)
-      }
-    }
-    getUpdatedUserData()
-  },[userData])
 
   return userData
 }
