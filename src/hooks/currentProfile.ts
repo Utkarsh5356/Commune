@@ -5,7 +5,7 @@ import axios from "axios";
 interface Profile {
    id:string 
    userId:string,
-   name:string | null,
+   name:string,
    imageUrl:string,
    email:string
 }

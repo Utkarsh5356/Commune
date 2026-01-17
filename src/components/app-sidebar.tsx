@@ -1,5 +1,6 @@
+import { useInitiateProfile } from "@/hooks/initiateProfile"
 import { useCurrentProfile } from "@/hooks/currentProfile"
-import { ArchiveX, File, Inbox, Send, Trash2, CirclePlus } from "lucide-react"
+import { ArchiveX, File, Inbox, Send, Trash2, CirclePlus} from "lucide-react"
 import { NavUser } from '@/components/nav-user'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -25,7 +26,6 @@ import {
  } from "./ui/sidebar"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -83,6 +83,7 @@ const formSchema=z.object({
 })
 
 interface Profile {
+  id:string
   userId:string,
   name:string,
   imageUrl:string,
@@ -90,7 +91,8 @@ interface Profile {
 }
 
 export const AppSidebar=()=>{
-const currentProfile=useCurrentProfile() as Profile | null 
+useInitiateProfile() as Profile | null
+const currentProfile=useCurrentProfile() as Profile | null
 const navigate=useNavigate()
 const form=useForm({
   resolver:zodResolver(formSchema),
@@ -101,7 +103,6 @@ const form=useForm({
 })
 const isLoading = form.formState.isSubmitting
 const onSubmit = async(values:z.infer<typeof formSchema>)=>{
-  console.log("hi");
   try{
     await axios.post("http://localhost:3000/api/v1/server/create",{
       values,
@@ -110,7 +111,7 @@ const onSubmit = async(values:z.infer<typeof formSchema>)=>{
     form.reset()
     window.location.reload()
   }catch(err){
-   console.log(err);
+   console.error(err);
   }
 }
 return (
@@ -131,11 +132,11 @@ return (
                   }}
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0 transform active:scale-110 transition-transform duration-100"
                   >
-                   <a href="http://localhost:5173/channels">
-                      <Avatar className="rounded-lg">
+                  <div onClick={()=>navigate(`/channels/${currentProfile?.id}`)}>
+                    <Avatar className="rounded-lg cursor-pointer">
                         <AvatarImage />
-                      </Avatar>
-                   </a>
+                    </Avatar>
+                  </div>  
                  </SidebarMenuButton>
                </SidebarMenuItem>
              </SidebarMenu>
@@ -231,9 +232,7 @@ return (
                       />
                     </div>
                     <DialogFooter className="px-6">
-                     <DialogClose asChild>                
-                       <Button variant="primary" type="submit" disabled={isLoading}>Create</Button>
-                     </DialogClose>
+                      <Button variant="primary" type="submit" disabled={isLoading}>Create</Button>
                    </DialogFooter>
                   </form>
                 </Form>
