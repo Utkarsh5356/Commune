@@ -16,18 +16,27 @@ interface profileResponse {
 export const useCurrentProfile =()=>{
   const{user,isLoaded}=useUser()
   const [profileData,setProfileData]=useState<Profile | null>(null)
+  const [profileLoader,setProfileLoader]=useState(true)
 
   useEffect(()=>{  
-    const getCurrentProfile=async()=>{    
+    const getCurrentProfile=async()=>{  
+    if(isLoaded && !user){
+      setProfileLoader(false)
+      return
+    }  
     if(!user || !isLoaded) return 
+          
+    setProfileLoader(true)
     try{
       const profile=await axios.get<profileResponse>(`http://localhost:3000/api/v1/profile/data?userId=${user.id}`) 
       setProfileData(profile.data.user)     
     }catch(err){
      console.error(err);
+    }finally{
+      setProfileLoader(false)
     }
    }
    getCurrentProfile()
   },[user,isLoaded])
-  return profileData 
+  return {profileData,profileLoader} 
 }

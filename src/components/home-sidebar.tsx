@@ -1,6 +1,7 @@
 import { useInitiateProfile } from "@/hooks/initiateProfile"
 import { useCurrentProfile } from "@/hooks/currentProfile"
-import { ArchiveX, File, Inbox, Send, Trash2, CirclePlus} from "lucide-react"
+import { useUserServers } from "@/hooks/userServers"
+import { CirclePlus } from "lucide-react"
 import { NavUser } from '@/components/nav-user'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -12,6 +13,7 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import { ImageUpload } from "./imageUpload"
 import { useNavigate } from "react-router"
 import axios from "axios"
+import Loader from "./ui/loader"
 import { 
   Sidebar,
   SidebarContent,
@@ -23,6 +25,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarInset
  } from "./ui/sidebar"
 import {
   Dialog,
@@ -41,41 +44,6 @@ import {
   FormItem,
   FormMessage
 } from "./ui/form"
-// This is sample data
-const data = {
-  navMain: [
-    {
-      title: "Inbox",
-      url: "#",
-      icon: Inbox,
-      isActive: true,
-    },
-    {
-      title: "Drafts",
-      url: "#",
-      icon: File,
-      isActive: false,
-    },
-    {
-      title: "Sent",
-      url: "#",
-      icon: Send,
-      isActive: false,
-    },
-    {
-      title: "Junk",
-      url: "#",
-      icon: ArchiveX,
-      isActive: false,
-    },
-    {
-      title: "Trash",
-      url: "#",
-      icon: Trash2,
-      isActive: false,
-    },
-  ],
-}
 
 const formSchema=z.object({
   name:z.string().min(1,{message:"Server name is required"}),
@@ -83,17 +51,20 @@ const formSchema=z.object({
 })
 
 interface Profile {
-  id:string
+  id:string 
   userId:string,
   name:string,
   imageUrl:string,
-  email:String
+  email:string
 }
 
-export const AppSidebar=()=>{
-useInitiateProfile() as Profile | null
-const currentProfile=useCurrentProfile() as Profile | null
+
+export const HomeSidebar=()=>{
 const navigate=useNavigate()
+useInitiateProfile() 
+const {profileData,profileLoader}=useCurrentProfile()
+const {serverData,serverLoader}=useUserServers(profileData?.id)
+
 const form=useForm({
   resolver:zodResolver(formSchema),
   defaultValues:{
@@ -102,11 +73,18 @@ const form=useForm({
   }
 })
 const isLoading = form.formState.isSubmitting
+
+if(profileLoader || serverLoader){
+  return <div className="min-h-screen min-w-screen flex items-center justify-center">
+    <Loader/>
+  </div>
+}
+
 const onSubmit = async(values:z.infer<typeof formSchema>)=>{
   try{
     await axios.post("http://localhost:3000/api/v1/server/create",{
       values,
-      currentProfile
+      profileData
     })
     form.reset()
     window.location.reload()
@@ -115,7 +93,7 @@ const onSubmit = async(values:z.infer<typeof formSchema>)=>{
   }
 }
 return (
- <div className="flex h-screen">
+ <div className="flex min-h-screen">
     <Sidebar collapsible="none" className="rounded-2xl">
         {/* LEFT: icon rail + second sidebar as flex children */}
         <div className="flex h-full">
@@ -130,11 +108,19 @@ return (
                    children:"Home",
                    hidden: false,
                   }}
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0 transform active:scale-110 transition-transform duration-100"
+                  className="size-10 p-0 rounded-lg
+                  bg-sidebar-primary text-sidebar-primary-foreground
+                  focus-visible:ring-0 focus-visible:outline-none"              
+                >
+                  <div onClick={()=>navigate("/channels")}
+                   className="flex items-center justify-center
+                   size-10 rounded-lg cursor-pointer
+                   transition-transform duration-150
+                   hover:scale-110 active:scale-105
+                   "
                   >
-                  <div onClick={()=>navigate(`/channels/${currentProfile?.id}`)}>
-                    <Avatar className="rounded-lg cursor-pointer">
-                        <AvatarImage />
+                    <Avatar className="rounded-md size-10 ring-0 ring-offset-0 border-0 shadow-none">
+                        <AvatarImage src={"https://cdn.dribbble.com/userupload/43049375/file/original-d6af1860c771054c2cd6690a4dbaba95.png?format=webp&resize=400x300&vertical=center"}/>
                     </Avatar>
                   </div>  
                  </SidebarMenuButton>
@@ -146,19 +132,27 @@ return (
             <SidebarGroup>
               <SidebarGroupContent className="px-1.5 md:px-0">
                 <SidebarMenu>
-                  {data.navMain.map((item) => (
-                    <SidebarMenuItem key={item.title}>
+                   {serverData.map((item) => (
+                    <SidebarMenuItem key={item.name}>
                       <SidebarMenuButton
                         tooltip={{
-                          children: item.title,
+                          children: item.name,
                           hidden: false,
                         }}
-                        className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg cursor-pointer transform active:scale-110 transition-transform duration-100"
+                        className="p-0 bg-sidebar-primary text-sidebar-primary-foreground
+                        focus-visible:ring-0 focus-visible:outline-none
+                        flex items-center justify-center
+                        size-10 rounded-lg cursor-pointer
+                        transition-transform duration-150
+                        hover:scale-110 active:scale-105"     
                       >
                       {/* Icon image */}
-                       <Avatar className="rounded-lg">
-                         <AvatarImage/>
+                      <div onClick={()=>navigate("/channels")}>
+                       <Avatar className="rounded-lg size-10 ring-0 ring-offset-0 border-0 shadow-none">
+                         <AvatarImage src={item.imageUrl}/>
                        </Avatar>
+                      </div>
+                       
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -239,7 +233,7 @@ return (
               </DialogContent>
           </Dialog>
           <SidebarFooter>
-            <NavUser/>
+            <NavUser name={profileData?.name} image={profileData?.imageUrl} email={profileData?.email}/>
           </SidebarFooter>
          </div>
          {/* Second sidebar (text/details) */}
@@ -258,6 +252,11 @@ return (
          </div>
        </div>
      </Sidebar>
+     {/* <SidebarInset className="w-full">
+        <header className="bg-background sticky top-0 flex justify-center shrink-0 gap-2 border-b p-1 rounded-b-2xl">
+          <div className="text-sm font-semibold">Commune</div>
+        </header>  
+      </SidebarInset> */}
   </div>
 )    
 }

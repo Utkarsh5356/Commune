@@ -25,19 +25,16 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from './ui/sidebar'
-import { useInitiateProfile } from "../hooks/initiateProfile"
 import { SignOutButton,useClerk} from "@clerk/clerk-react"
 
 
 interface Profile {
-   userId:string
-   name:string,
-   imageUrl:string,
-   email:String
+  name:string | undefined,
+  image:string | undefined,
+  email:String | undefined
 }
 
-export const NavUser=()=>{
-const profile=useInitiateProfile() as Profile | null
+export const NavUser=({name,image,email}:Profile)=>{
 const{openUserProfile}=useClerk()
 const { isMobile } = useSidebar()
 return (
@@ -51,7 +48,7 @@ return (
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0"
             >
               <Avatar className="h-8 w-8 rounded-lg cursor-pointer">
-                <AvatarImage src={profile?.imageUrl} alt={profile?.name} />
+                <AvatarImage src={image} alt={name} />
               </Avatar>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -64,11 +61,11 @@ return (
             <DropdownMenuLabel onClick={()=>openUserProfile()} className="p-0 font-normal cursor-pointer">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="rounded-2xl">
-                  <AvatarImage src={profile?.imageUrl} alt={profile?.name}/>
+                  <AvatarImage src={image} alt={name}/>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{profile?.name}</span>
-                  <span className="truncate text-xs">{profile?.email}</span>
+                  <span className="truncate font-medium">{name}</span>
+                  <span className="truncate text-xs">{email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
