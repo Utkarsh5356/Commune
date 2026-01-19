@@ -6,7 +6,7 @@ import { NavUser } from '@/components/nav-user'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Separator } from "./ui/separator"
-import { Avatar,AvatarImage } from "./ui/avatar"
+import { Avatar,AvatarImage,AvatarFallback } from "./ui/avatar"
 import {useForm} from "react-hook-form"
 import * as z from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
@@ -119,8 +119,8 @@ return (
                    hover:scale-110 active:scale-105
                    "
                   >
-                    <Avatar className="rounded-md size-10 ring-0 ring-offset-0 border-0 shadow-none">
-                        <AvatarImage src={"https://cdn.dribbble.com/userupload/43049375/file/original-d6af1860c771054c2cd6690a4dbaba95.png?format=webp&resize=400x300&vertical=center"}/>
+                    <Avatar className="size-10 ring-0 ring-offset-0 border-0 shadow-none">
+                      <AvatarImage src={""}/>
                     </Avatar>
                   </div>  
                  </SidebarMenuButton>
@@ -147,7 +147,7 @@ return (
                         hover:scale-110 active:scale-105"     
                       >
                       {/* Icon image */}
-                      <div onClick={()=>navigate("/channels")}>
+                      <div onClick={()=>navigate(`/channels/${item.id}`)}>
                        <Avatar className="rounded-lg size-10 ring-0 ring-offset-0 border-0 shadow-none">
                          <AvatarImage src={item.imageUrl}/>
                        </Avatar>
