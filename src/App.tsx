@@ -13,7 +13,7 @@ function App() {
       <Route path={"/"} element={<Home/>}/>
       <Route path={"/signup"} element={<Signup/>}/>
       <Route path={"/signin"} element={<Signin/>}/>
-      <Route path={"/channels"} element={<Channels/>}></Route>
+      <Route path={"/channels/@me"} element={<Channels/>}></Route>
       <Route path={`/channels/:serverId`} element={<ServerPage/>}/>
       <Route path={"/sso-callback"} element={<SSOcallback/>}></Route>
      </Routes>

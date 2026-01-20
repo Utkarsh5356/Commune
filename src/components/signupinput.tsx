@@ -20,7 +20,7 @@ export default function SignUpInput(){
   const [showPassword,setShowPassword] = useState(false) 
   const navigate=useNavigate() 
   
-  if(isSignedIn) navigate("/channels")
+  if(isSignedIn) navigate("/channels/@me")
   if(!isLoaded) return <Loader/>
    
   async function submit(){
@@ -53,7 +53,7 @@ export default function SignUpInput(){
       await setActive({
         session:completeSignup.createdSessionId
       })
-      navigate("/channels")
+      navigate("/channels/@me")
      }
     }catch(err:any){
      console.log(err)
@@ -67,7 +67,7 @@ export default function SignUpInput(){
       await signUp.authenticateWithRedirect({
       strategy:'oauth_google',
       redirectUrl:'/sso-callback',
-      redirectUrlComplete:'/channels',
+      redirectUrlComplete:'/channels/@me',
      })
     }catch(err:any){
       console.log(err)

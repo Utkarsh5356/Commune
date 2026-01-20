@@ -3,24 +3,14 @@ import { useParams,useNavigate } from "react-router";
 import { cn } from "@/lib/utils"
 import { ActionTooltip } from "./action-tooltip"
 
-interface NavigationItemProps {
-   id: string;
-   name: string;
-   imageUrl: string  
-}
-
-export const NavigationItem=({
-    id,
-    imageUrl,
-    name
-}:NavigationItemProps)=>{
-  const navigate=useNavigate() 
-  const {serverId}=useParams()
-  return (
-    <ActionTooltip
+export const HeaderIcon=({headerImage,id}:{headerImage:string,id:string})=>{
+ const navigate=useNavigate()
+ const {serverId}=useParams()   
+ return(
+   <ActionTooltip
       side="right"
       align="center"
-      label={name}
+      label="Home"
     >
      <button
       onClick={()=>{navigate(`/channels/${id}`)}}
@@ -36,7 +26,7 @@ export const NavigationItem=({
          serverId === id && "bg-white/10 text-white rounded-2xl"
        )}>
         <Image
-         src={imageUrl}
+         src={headerImage}
          width={800}
          height={600}
          layout="constrained"
@@ -45,5 +35,5 @@ export const NavigationItem=({
       </div>
      </button>
     </ActionTooltip> 
-  )
+ )
 }
