@@ -3,7 +3,7 @@ import { useCurrentProfile } from "@/hooks/currentProfile"
 import { useUserServers } from "@/hooks/userServers"
 import { ScrollArea } from "./ui/scroll-area"
 import { NavigationItem } from "./navigation-item"
-import { NavigationAction } from "./navigation-action"
+import { HomeCreateServer } from "./home-create-server"
 import { HeaderIcon } from "./header-icon"
 import { UserButton } from "@clerk/clerk-react"
 import { Separator } from "./ui/separator"
@@ -38,7 +38,7 @@ export const HomeSidebar=()=>{
         </div>
        ))}
       </ScrollArea>
-      <NavigationAction profileId={profileData?.id}/>
+      <HomeCreateServer profileId={profileData?.id}/>
       <div className="relative group flex mx-3 h-12 w-12 rounded-3xl 
        group-hover:rounded-2xl transition-all overflow-hidden"
       >
