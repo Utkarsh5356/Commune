@@ -1,6 +1,6 @@
-import { useInitiateProfile } from "@/hooks/initiateProfile"
-import { useCurrentProfile } from "@/hooks/currentProfile"
-import { useUserServers } from "@/hooks/userServers"
+import { useInitiateProfile } from "@/hooks/use-initiateProfile"
+import { useCurrentProfile } from "@/hooks/use-currentProfile"
+import { useAllServers } from "@/hooks/use-all-servers"
 import { ScrollArea } from "./ui/scroll-area"
 import { NavigationItem } from "./navigation-item"
 import { HomeCreateServer } from "./home-create-server"
@@ -9,10 +9,10 @@ import { UserButton } from "@clerk/clerk-react"
 import { Separator } from "./ui/separator"
 import Loader from "./ui/loader"
 
-export const HomeSidebar=()=>{
+export const HomeNavigation=()=>{
   useInitiateProfile() 
   const {profileData,profileLoader}=useCurrentProfile()
-  const {serverData,serverLoader}=useUserServers(profileData?.id)
+  const {serverData,serverLoader}=useAllServers(profileData?.id)
   
   if(profileLoader || serverLoader){
     return <div className="min-h-screen min-w-screen flex items-center justify-center">

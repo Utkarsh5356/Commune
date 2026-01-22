@@ -1,5 +1,5 @@
 import { ServerCreate } from "./server-create";
-import { useCurrentProfile } from "@/hooks/currentProfile";
+import { useCurrentProfile } from "@/hooks/use-currentProfile";
 
 export const ModalProvider=()=>{
   const {profileData}=useCurrentProfile()

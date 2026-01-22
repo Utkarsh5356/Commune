@@ -1,55 +1,30 @@
-import { useCurrentProfile } from "@/hooks/currentProfile"
-import { useUserServers } from "@/hooks/userServers"
-import { Separator } from "./ui/separator"
-import { NavigationAction } from "./navigation-action"
-import { ScrollArea } from "./ui/scroll-area"
-import { NavigationItem } from "./navigation-item"
-import { HeaderIcon } from "./header-icon"
-import { UserButton } from "@clerk/clerk-react"
-import Loader from "./ui/loader"
+import { type Profile } from "@/hooks/use-currentProfile";
+import { useServerData } from "@/hooks/use-server-data";
+import { useNavigate } from "react-router";
+import Loader from "./ui/loader";
 
-export const ServerSidebar=()=>{
-  const {profileData,profileLoader}=useCurrentProfile()
-  const {serverData,serverLoader}=useUserServers(profileData?.id)
-  if(profileLoader || serverLoader){
-    return <div className="min-h-screen min-w-screen flex items-center justify-center">
-      <Loader/>
+interface ServerSidebarProps {
+  serverId:string | undefined; 
+  profileData:Profile | null
+}
+
+export const ServerSidebar=({serverId,profileData}:ServerSidebarProps)=>{
+  const navigate=useNavigate()
+  const {userServerData,userServerLoader}=useServerData({serverId})
+  console.log(userServerData)
+  if(userServerLoader) return <Loader/>
+  if(!userServerData) navigate("/")
+   
+  const textChannels=userServerData?.serverData.channels.filter((channel)=>channel.type === userServerData.ChannelType.TEXT)
+  const audioChannels=userServerData?.serverData.channels.filter((channel)=>channel.type === userServerData.ChannelType.AUDIO)
+  const videoChannels=userServerData?.serverData.channels.filter((channel)=>channel.type === userServerData.ChannelType.VIDEO)
+  const members=userServerData?.serverData.members.filter((member)=>member.profileId !== profileData?.id) 
+  
+  const role=userServerData?.serverData.members.find((member)=>member.profileId === profileData?.id)?.role
+
+  return (
+    <div>
+      ServerSidebar
     </div>
-  }
-
-  return(
-    <div
-     className="space-y-4 flex flex-col items-center h-full 
-     text-white w-full bg-[#1E1F22] py-3" 
-    >
-      <HeaderIcon headerImage={"https://images.scalebranding.com/da4e9838-f6d6-46c6-8515-b43166f64c98.png"} 
-        id={"@me"}/>
-      <Separator
-       className="h-0.5 bg-zinc-700  
-       rounded-md w-10 mx-auto"
-      />  
-      <ScrollArea className="flex-1 w-full">
-       {serverData.map((server)=>(
-        <div key={server.id} className="mb-5">
-          <NavigationItem id={server.id} name={server.name} imageUrl={server.imageUrl}/>
-        </div>
-       ))}
-      </ScrollArea>
-      <NavigationAction/>
-      <div className="relative group flex mx-3 h-12 w-12 rounded-3xl 
-       group-hover:rounded-2xl transition-all overflow-hidden"
-      >
-        <UserButton
-         appearance={{
-          elements:{
-            avatarBox:{
-              width: "46px",
-              height: "46px",
-            }
-          }
-         }}
-        />
-      </div>
-    </div>    
   )
 }

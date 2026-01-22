@@ -2,7 +2,7 @@ import { useUser } from "@clerk/react-router";
 import { useEffect,useState } from "react";
 import axios from "axios";
 
-interface Profile {
+export interface Profile {
    id:string 
    userId:string,
    name:string,
