@@ -1,12 +1,12 @@
 import { useEffect,useState } from "react"
 import axios from "axios"
 
-interface Channels{
+export interface Channels{
   id:string;
   name:string;
   type:string;
 }
-interface Members{
+export interface Members{
   id:string;
   role:string;
   profileId:string;
@@ -18,10 +18,10 @@ interface Members{
     email:string
   }
 }
-interface ChannelType{
-    TEXT:string;
-    AUDIO:string;
-    VIDEO:string
+export interface ChannelType{
+  TEXT:string;
+  AUDIO:string;
+  VIDEO:string
 }
 interface ServerDataTypes{
   id:string;
@@ -32,7 +32,7 @@ interface ServerDataTypes{
   channels:Channels[];
   members:Members[]
 }
-interface ServerData{
+export interface ServerData{
   serverData:ServerDataTypes 
   ChannelType:ChannelType  
 }

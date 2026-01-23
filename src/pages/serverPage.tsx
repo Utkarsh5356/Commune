@@ -17,7 +17,7 @@ export const ServerPage=()=>{
 
   return (
    <div>
-     <div className="bg-[#2b2c2e] flex min-h-screen text-white h-full">
+     <div className="bg-[#343639] flex min-h-screen text-white h-full">
        <div className=" h-full w-18 z-30
          flex-col fixed inset-y-0">
          <ServerNavigation profileId={profileData?.id}/>

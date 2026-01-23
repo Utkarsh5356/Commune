@@ -1,6 +1,7 @@
 import { type Profile } from "@/hooks/use-currentProfile";
 import { useServerData } from "@/hooks/use-server-data";
 import { useNavigate } from "react-router";
+import { ServerHeader } from "./server-header";
 import Loader from "./ui/loader";
 
 interface ServerSidebarProps {
@@ -11,7 +12,6 @@ interface ServerSidebarProps {
 export const ServerSidebar=({serverId,profileData}:ServerSidebarProps)=>{
   const navigate=useNavigate()
   const {userServerData,userServerLoader}=useServerData({serverId})
-  console.log(userServerData)
   if(userServerLoader) return <Loader/>
   if(!userServerData) navigate("/")
    
@@ -21,10 +21,9 @@ export const ServerSidebar=({serverId,profileData}:ServerSidebarProps)=>{
   const members=userServerData?.serverData.members.filter((member)=>member.profileId !== profileData?.id) 
   
   const role=userServerData?.serverData.members.find((member)=>member.profileId === profileData?.id)?.role
-
   return (
-    <div>
-      ServerSidebar
+    <div className="flex flex-col h-screen text-white w-60 bg-[#2B2D31]">
+      <ServerHeader server={userServerData?.serverData} role={role}/> 
     </div>
   )
 }
