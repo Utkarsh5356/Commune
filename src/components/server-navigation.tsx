@@ -14,7 +14,7 @@ export const ServerNavigation=({profileId}:{profileId:string | undefined})=>{
       <Loader/>
     </div>
   }
-
+  
   return(
     <div
      className="space-y-4 flex flex-col items-center h-full 
