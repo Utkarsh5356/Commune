@@ -4,6 +4,7 @@ import {Signup} from "./pages/signup"
 import {Signin} from "./pages/singin"
 import {Channels} from "./pages/channels"
 import { ServerPage } from "./pages/serverPage"
+import { InviteCodePage } from "./pages/invite-code-page"
 import { SSOcallback } from "./pages/sso-callback"
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path={"/signin"} element={<Signin/>}/>
       <Route path={"/channels/@me"} element={<Channels/>}></Route>
       <Route path={`/channels/:serverId`} element={<ServerPage/>}/>
+      <Route path={`/invite/:inviteCode`} element={<InviteCodePage/>}/>
       <Route path={"/sso-callback"} element={<SSOcallback/>}></Route>
      </Routes>
    </div>

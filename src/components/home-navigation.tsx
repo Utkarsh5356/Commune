@@ -13,7 +13,7 @@ export const HomeNavigation=()=>{
   useInitiateProfile() 
   const {profileData,profileLoader}=useCurrentProfile()
   const {serverData,serverLoader}=useAllServers(profileData?.id)
-  
+
   if(profileLoader || serverLoader){
     return <div className="min-h-screen min-w-screen flex items-center justify-center">
       <Loader/>
