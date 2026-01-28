@@ -18,7 +18,10 @@ export const useInitiateProfile=()=>{
   const[userData,setUserData]=useState<Profile | null>(null)
   const navigate=useNavigate() 
   useEffect(()=>{
-   if(!user && isLoaded) navigate("/signin")
+   if(!user && isLoaded){
+    navigate("/signin")
+    return 
+   } 
   },[user,isLoaded,navigate])
   
   useEffect(()=>{

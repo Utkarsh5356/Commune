@@ -26,7 +26,7 @@ export const ServerNavigation=({profileId}:{profileId:string | undefined})=>{
        className="h-0.5 bg-zinc-700  
        rounded-md w-10 mx-auto"
       />  
-      <ScrollArea className="flex-1 w-full">
+      <ScrollArea className="flex-1 h-50 w-full">
        {serverData.map((server)=>(
         <div key={server.id} className="mb-5">
           <NavigationItem id={server.id} name={server.name} imageUrl={server.imageUrl}/>
