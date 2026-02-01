@@ -3,7 +3,6 @@ import { useState } from "react"
 import { type ServerProps } from "./server-header"
 import { ScrollArea } from "./ui/scroll-area"
 import { UserAvatar } from "./user-avatar"
-import qs from "query-string"
 import axios from "axios"
 import { 
   Shield,
@@ -11,6 +10,7 @@ import {
   ShieldAlert,
   MoreVertical,
   ShieldQuestion,
+  User2,
   Check,
   Gavel,
   Loader2 
@@ -42,24 +42,17 @@ const roleIconMap=(role:string)=>{
 
 export const MembersModal=()=>{
   const { onOpen,isOpen,onClose,type,data }=useModal() 
-  const { server }=data as {server: ServerProps}
+  const { server,profileId }=data as {server: ServerProps,profileId: string}
   const [loadingId,setLoadingId]=useState("") 
-   
+
   const isModalOpen=isOpen && type === "members"
   const serverMemberCount=server?.members?.length
   
   const onRoleChange=async(memberId:string,role:string)=>{
     try{
      setLoadingId(memberId)
-     const url = qs.stringify({
-      url: `http://localhost:3000/api/v1/member/role-change?memberId=${memberId}&profileId=${server?.profileId}`,
-      query: {
-       serverId: server?.id,
-       memberId
-      }
-     })
-
-     const response=await axios.patch(url, {role})
+     const response=await axios.patch(`http://localhost:3000/api/v1/member/role-change?memberId=${memberId}&profileId=${profileId}&serverId=${server.id}`,
+      {role})
      onOpen("members" , {server: response.data})
     }catch(err){
      console.error(err)
@@ -111,7 +104,7 @@ export const MembersModal=()=>{
                       <DropdownMenuPortal>
                         <DropdownMenuSubContent>
                           <DropdownMenuItem onClick={()=>onRoleChange(member.id,"GUEST")} className="cursor-pointer">
-                           <Shield className="h-4 w-4 mr-2"/> 
+                           <User2 className="h-4 w-4 mr-2"/> 
                            Guest
                            {member.role === "GUEST" && (
                             <Check
@@ -120,7 +113,7 @@ export const MembersModal=()=>{
                            )}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={()=>onRoleChange(member.id,"MODERATOR")} className="cursor-pointer">
-                           <Shield className="h-4 w-4 mr-2"/> 
+                          <ShieldCheck className="h-4 w-4  text-indigo-500" />
                            Moderator
                            {member.role === "MODERATOR" && (
                             <Check

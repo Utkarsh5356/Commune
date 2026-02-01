@@ -12,6 +12,7 @@ interface ServerProps {
 
 interface ModalData {
   server?:ServerProps
+  profileId?:string
 }
 
 interface ModalStore {
