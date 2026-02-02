@@ -1,20 +1,13 @@
-import { useAllServers } from "@/hooks/use-all-servers"
 import { Separator } from "./ui/separator"
 import { NavigationAction } from "./navigation-action"
 import { ScrollArea } from "./ui/scroll-area"
 import { NavigationItem } from "./navigation-item"
 import { HeaderIcon } from "./header-icon"
 import { UserButton } from "@clerk/clerk-react"
-import Loader from "./ui/loader"
+import { type Servers } from "@/hooks/use-all-servers"
 
-export const ServerNavigation=({profileId}:{profileId:string | undefined})=>{
-  const {serverData,serverLoader}=useAllServers(profileId)
-  if(serverLoader){
-    return <div className="min-h-screen min-w-screen flex items-center justify-center">
-      <Loader/>
-    </div>
-  }
-  
+export const ServerNavigation=({serverData}:{serverData:Servers[]})=>{
+
   return(
     <div
      className="space-y-4 flex flex-col items-center h-full 

@@ -1,26 +1,14 @@
-import { useInitiateProfile } from "@/hooks/use-initiateProfile"
-import { useCurrentProfile } from "@/hooks/use-currentProfile"
-import { useAllServers } from "@/hooks/use-all-servers"
 import { ScrollArea } from "./ui/scroll-area"
 import { NavigationItem } from "./navigation-item"
 import { HomeCreateServer } from "./home-create-server"
 import { HeaderIcon } from "./header-icon"
 import { UserButton } from "@clerk/clerk-react"
 import { Separator } from "./ui/separator"
-import Loader from "./ui/loader"
+import { type Profile } from "@/hooks/use-currentProfile"
+import { type Servers } from "@/hooks/use-all-servers"
 
-export const HomeNavigation=()=>{
-  useInitiateProfile() 
-  const {profileData,profileLoader}=useCurrentProfile()
-  const {serverData,serverLoader}=useAllServers(profileData?.id)
-
-  if(profileLoader || serverLoader){
-    return <div className="min-h-screen min-w-screen flex items-center justify-center">
-      <Loader/>
-    </div>
-  }
-
-  return (
+export const HomeNavigation=({serverData,profileData}:{serverData: Servers[],profileData: Profile | null})=>{
+ return (
     <div
      className="space-y-4 flex flex-col items-center h-full 
      text-white w-full bg-[#1E1F22] py-3" 

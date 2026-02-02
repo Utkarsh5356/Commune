@@ -1,5 +1,4 @@
 import { type Members } from "@/hooks/use-server-data"
-import { type Profile } from "@/hooks/use-currentProfile";
 import { useModal } from "store/use-modal-store";
 import { 
  ChevronDown,

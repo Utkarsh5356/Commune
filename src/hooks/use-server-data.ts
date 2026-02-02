@@ -23,7 +23,7 @@ export interface ChannelType{
   AUDIO:string;
   VIDEO:string
 }
-interface ServerDataTypes{
+export interface ServerDataTypes{
   id:string;
   name:string;
   imageUrl:string;
@@ -39,23 +39,23 @@ export interface ServerData{
 
 export const useServerData=({serverId}:{serverId:string | undefined})=>{
   const [userServerData,setUserServerData]=useState<ServerData | null>(null)
-  const [userServerLoader,setUserServerLoader]=useState(true)
+  const [userServerDataLoader,setUserServerDataLoader]=useState(true)
   
   useEffect(()=>{
    if(!serverId) return 
    
    const getServerData=async()=>{
     try{
-      setUserServerLoader(true)
+      setUserServerDataLoader(true)
       const serverData=await axios.get<ServerData>(`http://localhost:3000/api/v1/server/data?serverId=${serverId}`)
       setUserServerData(serverData.data)
     }catch(err){
       console.error(err)
     }finally{
-      setUserServerLoader(false)
+      setUserServerDataLoader(false)
     }
    }
    getServerData()
   },[serverId])
-  return {userServerData,userServerLoader}
+  return {userServerData,userServerDataLoader}
 }

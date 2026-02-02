@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react"
 import axios from "axios"
 
-interface Servers {
+export interface Servers {
   id: string;
   profileId: string;
   name: string;

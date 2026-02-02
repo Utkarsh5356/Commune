@@ -3,6 +3,7 @@ import { useState } from "react"
 import { type ServerProps } from "./server-header"
 import { ScrollArea } from "./ui/scroll-area"
 import { UserAvatar } from "./user-avatar"
+import { useNavigate } from "react-router"
 import axios from "axios"
 import { 
   Shield,
@@ -41,7 +42,8 @@ const roleIconMap=(role:string)=>{
 }
 
 export const MembersModal=()=>{
-  const { onOpen,isOpen,onClose,type,data }=useModal() 
+  const { onOpen,isOpen,onClose,type,data }=useModal()
+  const navigate=useNavigate() 
   const { server,profileId }=data as {server: ServerProps,profileId: string}
   const [loadingId,setLoadingId]=useState("") 
 

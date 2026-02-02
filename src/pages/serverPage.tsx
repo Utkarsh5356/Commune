@@ -3,6 +3,8 @@ import { useParams,useNavigate } from "react-router"
 import { useCurrentProfile } from "@/hooks/use-currentProfile"
 import { useServerInfo } from "@/hooks/use-server-info"
 import { ServerSidebar } from "@/components/server-sidebar"
+import { useAllServers } from "@/hooks/use-all-servers"
+import { useServerData } from "@/hooks/use-server-data"
 import Loader from "@/components/ui/loader"
 
 export const ServerPage=()=>{
@@ -11,21 +13,28 @@ export const ServerPage=()=>{
   const {profileData,profileLoader}=useCurrentProfile()
   const profileId=profileData?.id
   const {userServerInfo,userServerLoader}=useServerInfo({serverId,profileId})
-  
-  if(profileLoader || userServerLoader) return <div className="bg-[#2b2c2e] h-screen w-screen flex justify-center items-center"><Loader/></div>
-  if(!profileData || !userServerInfo) navigate("/")
+  const {serverData,serverLoader}=useAllServers(profileId)
+  const {userServerData,userServerDataLoader}=useServerData({serverId})
+
+  if(profileLoader || userServerLoader || serverLoader || userServerDataLoader){
+    return <div className="bg-[#2b2c2e] h-screen w-screen flex justify-center items-center"><Loader/></div>
+  } 
+  if(!profileData || !userServerInfo || !serverData || !userServerData){
+    navigate("/")
+    return 
+  } 
 
   return (
    <div>
      <div className="bg-[#343639] flex min-h-screen text-white h-full">
        <div className=" h-full w-18 z-30
          flex-col fixed inset-y-0">
-         <ServerNavigation profileId={profileData?.id}/>
+         <ServerNavigation serverData={serverData}/>
        </div>
        <div className="h-full">
          <div className="flex h-full pl-18 w-60 z-20
           flex-col inset-y-0">
-           <ServerSidebar serverId={serverId} profileData={profileData}/>
+           <ServerSidebar userServerData={userServerData} profileData={profileData}/>
          </div>
        </div>
        <div className="pl-18 h-full">
