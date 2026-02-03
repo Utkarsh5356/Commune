@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { type Members } from "@/hooks/use-server-data"
 import { useModal } from "store/use-modal-store";
 import { 
@@ -26,12 +27,13 @@ export interface ServerProps {
   members:Members[]
 }
 interface ServerHeaderProps {
-  server: ServerProps | undefined
+  serverHeaderData: ServerProps | undefined
   role: string | undefined
   profileId: string | undefined
 }
 
-export const ServerHeader=({server,role,profileId}:ServerHeaderProps)=>{
+export const ServerHeader=({serverHeaderData,role,profileId}:ServerHeaderProps)=>{
+  const [server,setServer]=useState(serverHeaderData)
   const { onOpen } = useModal()
   const isAdmin = role === "ADMIN"
   const isModerator = isAdmin || role === "MODERATOR"
@@ -81,7 +83,7 @@ export const ServerHeader=({server,role,profileId}:ServerHeaderProps)=>{
        )}
        {isAdmin && (
          <DropdownMenuItem 
-          onClick={()=>onOpen("members" , {server,profileId})}
+          onClick={()=>onOpen("members" , {server,profileId,setServer})}
           className="text-white h-full w-full px-3 py-2 text-sm cursor-pointer
           hover:bg-neutral-700 hover:text-neutral-300
           focus:bg-neutral-700 focus:text-neutral-300

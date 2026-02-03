@@ -1,18 +1,12 @@
+import { type ServerProps } from "@/components/server-header";
 import {create} from "zustand"
 
 export type ModalType= "createServer" | "invite" | "editServer" | "members";
 
-interface ServerProps {
-  id:string;
-  name:string;
-  imageUrl:string;
-  inviteCode:string;
-  profileId:string;
-}
-
 interface ModalData {
-  server?:ServerProps
-  profileId?:string
+  server?: ServerProps
+  profileId?: string
+  setServer?: (server:ServerProps)=>void
 }
 
 interface ModalStore {

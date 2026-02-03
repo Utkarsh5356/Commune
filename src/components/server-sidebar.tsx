@@ -17,7 +17,7 @@ export const ServerSidebar=({userServerData,profileData}:ServerSidebarProps)=>{
   const role=userServerData?.serverData.members.find((member)=>member.profileId === profileData?.id)?.role
   return (
     <div className="flex flex-col h-screen text-white w-60 bg-[#2B2D31]">
-      <ServerHeader server={userServerData?.serverData} role={role} profileId={profileData?.id}/> 
+      <ServerHeader serverHeaderData={userServerData?.serverData} role={role} profileId={profileData?.id}/> 
     </div>
   )
 }

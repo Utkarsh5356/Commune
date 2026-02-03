@@ -44,7 +44,7 @@ const roleIconMap=(role:string)=>{
 export const MembersModal=()=>{
   const { onOpen,isOpen,onClose,type,data }=useModal()
   const navigate=useNavigate() 
-  const { server,profileId }=data as {server: ServerProps,profileId: string}
+  const { server,profileId,setServer }=data
   const [loadingId,setLoadingId]=useState("") 
 
   const isModalOpen=isOpen && type === "members"
@@ -53,13 +53,14 @@ export const MembersModal=()=>{
   const onRoleChange=async(memberId:string,role:string)=>{
     try{
      setLoadingId(memberId)
-     const response=await axios.patch(`http://localhost:3000/api/v1/member/role-change?memberId=${memberId}&profileId=${profileId}&serverId=${server.id}`,
+     const response=await axios.patch(`http://localhost:3000/api/v1/member/role-change?memberId=${memberId}&profileId=${profileId}&serverId=${server?.id}`,
       {role})
+     setServer?.(response.data)
      onOpen("members" , {server: response.data})
     }catch(err){
      console.error(err)
     }finally{
-      setLoadingId("")
+     setLoadingId("")
     }
   }
 

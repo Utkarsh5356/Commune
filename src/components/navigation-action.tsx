@@ -25,7 +25,7 @@ export const NavigationAction=()=>{
          text-emerald-500"
          size={25}
        />
-      </div>    
+     </div>    
      </button>
     </ActionTooltip>
   )

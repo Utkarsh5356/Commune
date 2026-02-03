@@ -15,31 +15,47 @@ export const ServerPage=()=>{
   const {userServerInfo,userServerLoader}=useServerInfo({serverId,profileId})
   const {serverData,serverLoader}=useAllServers(profileId)
   const {userServerData,userServerDataLoader}=useServerData({serverId})
-
-  if(profileLoader || userServerLoader || serverLoader || userServerDataLoader){
+  
+  const isServerLoading=userServerLoader || userServerDataLoader
+  
+  if(!serverId || profileLoader || serverLoader){
     return <div className="bg-[#2b2c2e] h-screen w-screen flex justify-center items-center"><Loader/></div>
   } 
-  if(!profileData || !userServerInfo || !serverData || !userServerData){
-    navigate("/")
-    return 
-  } 
+  
+  if(!serverLoader){
+    if(!userServerInfo) navigate("/")
+  }
 
   return (
    <div>
      <div className="bg-[#343639] flex min-h-screen text-white h-full">
        <div className=" h-full w-18 z-30
          flex-col fixed inset-y-0">
-         <ServerNavigation serverData={serverData}/>
+          <ServerNavigation serverData={serverData}/>
        </div>
        <div className="h-full">
          <div className="flex h-full pl-18 w-60 z-20
           flex-col inset-y-0">
-           <ServerSidebar userServerData={userServerData} profileData={profileData}/>
+          {isServerLoading ? (
+            <div className="flex-1 flex items-center justify-center">
+               <Loader/>
+            </div> ):(          
+             <ServerSidebar userServerData={userServerData} profileData={profileData}/>
+            )
+          }
          </div>
        </div>
        <div className="pl-18 h-full">
          <div className="h-full">
-          serverContent
+          {isServerLoading ? (
+           <div className="flex-1 flex items-center justify-center">
+              <Loader/>
+           </div> ):(
+            <div>
+              serverContent
+            </div>         
+           )
+          }
          </div> 
        </div>
      </div>
