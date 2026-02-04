@@ -1,9 +1,7 @@
 import { useModal } from "store/use-modal-store"
 import { useState } from "react"
-import { type ServerProps } from "./server-header"
 import { ScrollArea } from "./ui/scroll-area"
 import { UserAvatar } from "./user-avatar"
-import { useNavigate } from "react-router"
 import axios from "axios"
 import { 
   Shield,
@@ -43,13 +41,25 @@ const roleIconMap=(role:string)=>{
 
 export const MembersModal=()=>{
   const { onOpen,isOpen,onClose,type,data }=useModal()
-  const navigate=useNavigate() 
   const { server,profileId,setServer }=data
   const [loadingId,setLoadingId]=useState("") 
 
   const isModalOpen=isOpen && type === "members"
   const serverMemberCount=server?.members?.length
   
+  const onKick=async(memberId:string)=>{
+    try{
+      setLoadingId(memberId)
+      const response=await axios.delete(`http://localhost:3000/api/v1/member/delete?memberId=${memberId}&serverId=${server?.id}&profileId=${profileId}`)
+      setServer?.(response.data)
+      onOpen("members" , {server:response.data})
+    }catch(err){
+      console.error(err)
+    }finally{
+      setLoadingId("")
+    }
+  }
+
   const onRoleChange=async(memberId:string,role:string)=>{
     try{
      setLoadingId(memberId)
@@ -128,7 +138,7 @@ export const MembersModal=()=>{
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem className="cursor-pointer">
+                    <DropdownMenuItem onClick={()=>onKick(member.id)} className="cursor-pointer">
                       <Gavel className="h-4 w-4 mr-2"/>
                       Kick
                     </DropdownMenuItem>

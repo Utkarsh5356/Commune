@@ -22,8 +22,11 @@ export const ServerPage=()=>{
     return <div className="bg-[#2b2c2e] h-screen w-screen flex justify-center items-center"><Loader/></div>
   } 
   
-  if(!serverLoader){
-    if(!userServerInfo) navigate("/")
+  if(!isServerLoading){
+    if(!userServerInfo){
+      navigate("/")
+      return 
+    }
   }
 
   return (

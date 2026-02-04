@@ -10,6 +10,7 @@ export const InviteCodePage=()=>{
  const {profileData,profileLoader}=useCurrentProfile() 
  const profileId=profileData?.id
  const {inviteCodeUserData,loading}=useInviteCodeUser({inviteCode,profileId})
+ 
  if(profileLoader) return <div className="bg-[#343639] h-screen w-screen flex justify-center items-center"><Loader/></div> 
  if(loading) return <div className="bg-[#343639] h-screen w-screen flex justify-center items-center"><Loader/></div> 
  
