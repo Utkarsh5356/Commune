@@ -97,6 +97,7 @@ export const ServerHeader=({serverHeaderData,role,profileId}:ServerHeaderProps)=
        )}
        {isModerator && (
          <DropdownMenuItem 
+          onClick={()=>onOpen("createChannel" , {server})}
           className="text-white h-full w-full px-3 py-2 text-sm cursor-pointer
           hover:bg-neutral-700 hover:text-neutral-300
           focus:bg-neutral-700 focus:text-neutral-300

@@ -3,6 +3,7 @@ import { useCurrentProfile } from "@/hooks/use-currentProfile";
 import { InviteModal } from "./invite-modal";
 import { EditServer } from "./edit-server";
 import { MembersModal } from "./members-modal";
+import { CreateChannelModal } from "./create-channel-modal";
 
 export const ModalProvider=()=>{
   const {profileData}=useCurrentProfile()
@@ -12,7 +13,8 @@ export const ModalProvider=()=>{
      <ServerCreate profileId={profileData?.id}/>
      <InviteModal/> 
      <EditServer profileId={profileData?.id} />
-     <MembersModal/>  
+     <MembersModal/>
+     <CreateChannelModal profileId={profileData?.id}/>  
     </>
   )
 }
