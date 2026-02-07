@@ -67,7 +67,6 @@ export const CreateChannelModal=({profileId}:{profileId:string | undefined})=>{
       })
       form.reset()
       onClose()
-      window.location.reload()
     }catch(err){
      console.error(err);
     }

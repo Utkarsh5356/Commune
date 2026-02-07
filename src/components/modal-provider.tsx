@@ -4,6 +4,7 @@ import { InviteModal } from "./invite-modal";
 import { EditServer } from "./edit-server";
 import { MembersModal } from "./members-modal";
 import { CreateChannelModal } from "./create-channel-modal";
+import { LeaveServerModal } from "./leave-server-modal";
 
 export const ModalProvider=()=>{
   const {profileData}=useCurrentProfile()
@@ -15,6 +16,7 @@ export const ModalProvider=()=>{
      <EditServer profileId={profileData?.id} />
      <MembersModal/>
      <CreateChannelModal profileId={profileData?.id}/>  
+     <LeaveServerModal/>
     </>
   )
 }

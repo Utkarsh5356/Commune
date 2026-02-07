@@ -5,6 +5,7 @@ export function Home(){
         <div className="">
           <div>
            Welcone to Landing Page
+           ERRORS FIX: SENDING clerkuserid in initiateprofile hook 
            <SignUpButton></SignUpButton>
            <SignInButton></SignInButton>
           </div>
