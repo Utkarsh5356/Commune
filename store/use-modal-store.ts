@@ -2,7 +2,7 @@ import { type ServerProps } from "@/components/server-header";
 import {create} from "zustand"
 
 export type ModalType= "createServer" | "invite" | "editServer"
- | "members" | "createChannel" | "leaveServer";
+ | "members" | "createChannel" | "leaveServer" | "deleteServer";
 
 interface ModalData {
   server?: ServerProps

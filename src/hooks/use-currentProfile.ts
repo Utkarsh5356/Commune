@@ -15,6 +15,7 @@ interface profileResponse {
 
 export const useCurrentProfile =()=>{
   const{user,isLoaded}=useUser()
+  console.log(user)
   const [profileData,setProfileData]=useState<Profile | null>(null)
   const [profileLoader,setProfileLoader]=useState(true)
 
