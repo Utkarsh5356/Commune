@@ -13,7 +13,7 @@ export const ServerPage=()=>{
   const {profileData,profileLoader}=useCurrentProfile()
   const profileId=profileData?.id
   const {userServerInfo,userServerLoader}=useServerInfo({serverId,profileId})
-  const {serverData,serverLoader}=useAllServers(profileId)
+  const {serverData,serverLoader}=useAllServers()
   const {userServerData,userServerDataLoader}=useServerData({serverId})
   
   const isServerLoading=userServerLoader || userServerDataLoader

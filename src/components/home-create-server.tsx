@@ -6,6 +6,7 @@ import { ImageUpload } from "./imageUpload"
 import { Plus } from "lucide-react"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
+import { useAuth } from "@clerk/clerk-react"
 import axios from "axios"
 import {
   Dialog,
@@ -30,7 +31,9 @@ const formSchema=z.object({
   imageUrl:z.string().min(1,{message:"Server image is required"})
 })
 
-export const HomeCreateServer=({profileId}:{profileId:string | undefined})=>{
+export const HomeCreateServer=()=>{
+  const {getToken}=useAuth()
+
   const form=useForm({
     resolver:zodResolver(formSchema),
     defaultValues:{
@@ -43,10 +46,16 @@ export const HomeCreateServer=({profileId}:{profileId:string | undefined})=>{
   
   const onSubmit = async(values:z.infer<typeof formSchema>)=>{
     try{
+      const token=await getToken()
       await axios.post("http://localhost:3000/api/v1/server/create",{
-        values,
-        profileId
-      })
+        values
+      },{
+        headers:{
+          'Authorization':`Bearer ${token}`,
+          'Content-Type':'application/json'
+        }
+      }
+    )
       form.reset()
       window.location.reload()
     }catch(err){

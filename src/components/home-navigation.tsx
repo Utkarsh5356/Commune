@@ -4,10 +4,9 @@ import { HomeCreateServer } from "./home-create-server"
 import { HeaderIcon } from "./header-icon"
 import { UserButton } from "@clerk/clerk-react"
 import { Separator } from "./ui/separator"
-import { type Profile } from "@/hooks/use-currentProfile"
 import { type Servers } from "@/hooks/use-all-servers"
 
-export const HomeNavigation=({serverData,profileData}:{serverData: Servers[],profileData: Profile | null})=>{
+export const HomeNavigation=({serverData}:{serverData: Servers[]})=>{
  return (
     <div
      className="space-y-4 flex flex-col items-center h-full 
@@ -26,7 +25,7 @@ export const HomeNavigation=({serverData,profileData}:{serverData: Servers[],pro
         </div>
        ))}
       </ScrollArea>
-      <HomeCreateServer profileId={profileData?.id}/>
+      <HomeCreateServer />
       <div className="relative group flex mx-3 h-12 w-12 rounded-3xl 
        group-hover:rounded-2xl transition-all overflow-hidden"
       >
