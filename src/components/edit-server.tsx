@@ -1,4 +1,5 @@
 import { useModal } from "store/use-modal-store"
+import { useAuth } from "@clerk/clerk-react"
 import {useForm} from "react-hook-form"
 import * as z from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
@@ -28,7 +29,8 @@ const formSchema=z.object({
   imageUrl:z.string().min(1,{message:"Server image is required"})
 })
 
-export const EditServer=({profileId}:{profileId:string | undefined})=>{
+export const EditServer=()=>{
+  const {getToken}=useAuth()
   const { isOpen,onClose,type,data }=useModal() 
   
   const isModalOpen=isOpen && type === "editServer"
@@ -53,9 +55,14 @@ export const EditServer=({profileId}:{profileId:string | undefined})=>{
   
   const onSubmit = async(values:z.infer<typeof formSchema>)=>{
     try{
+      const token=await getToken()
       await axios.patch(`http://localhost:3000/api/v1/server/customize?serverId=${server?.id}`,{
-        values,
-        profileId
+        values
+      },{
+        headers:{
+          'Authorization':`Bearer ${token}`,
+          'Content-Type':'application/json'
+        }
       })
       form.reset()
       onClose()

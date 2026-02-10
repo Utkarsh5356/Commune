@@ -11,8 +11,7 @@ export const ServerPage=()=>{
   const {serverId}=useParams()
   const navigate=useNavigate()
   const {profileData,profileLoader}=useCurrentProfile()
-  const profileId=profileData?.id
-  const {userServerInfo,userServerLoader}=useServerInfo({serverId,profileId})
+  const {userServerInfo,userServerLoader}=useServerInfo({serverId})
   const {serverData,serverLoader}=useAllServers()
   const {userServerData,userServerDataLoader}=useServerData({serverId})
   

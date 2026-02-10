@@ -1,5 +1,4 @@
 import { useEffect,useState } from "react";
-import { useNavigate } from "react-router";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 
@@ -15,7 +14,6 @@ interface profileResponse {
 
 export const useCurrentProfile =()=>{
   const { getToken }=useAuth()
-  const navigate=useNavigate()
   const [profileData,setProfileData]=useState<Profile | null>(null)
   const [profileLoader,setProfileLoader]=useState(true)
 
@@ -34,7 +32,6 @@ export const useCurrentProfile =()=>{
       setProfileData(profile.data.user)     
     }catch(err){
      console.error(err);
-     navigate("/")
     }finally{
       setProfileLoader(false)
     }

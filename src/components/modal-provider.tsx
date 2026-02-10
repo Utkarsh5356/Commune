@@ -12,9 +12,9 @@ export const ModalProvider=()=>{
 
   return (
     <>
-     <ServerCreate profileId={profileData?.id}/>
+     <ServerCreate/>
      <InviteModal/> 
-     <EditServer profileId={profileData?.id} />
+     <EditServer/>
      <MembersModal/>
      <CreateChannelModal profileId={profileData?.id}/>  
      <LeaveServerModal/>

@@ -20,7 +20,10 @@ export default function SignUpInput(){
   const [showPassword,setShowPassword] = useState(false) 
   const navigate=useNavigate() 
   
-  if(isSignedIn) navigate("/channels/@me")
+  if(isSignedIn){
+    navigate("/channels/@me")
+    return 
+  } 
   if(!isLoaded) return <Loader/>
    
   async function submit(){

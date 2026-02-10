@@ -1,22 +1,29 @@
 import { useEffect,useState } from "react"
+import { useAuth } from "@clerk/clerk-react"
 import axios from "axios"
 
-export const useInviteCodeUser=({inviteCode,profileId}:{inviteCode:string | undefined,profileId:string | undefined})=>{
+export const useInviteCodeUser=({inviteCode}:{inviteCode:string | undefined})=>{
+  const {getToken}=useAuth()
   const [inviteCodeUserData,setInviteCodeUserData]=useState<any>()  
   const [loading,isLoading]=useState(true)
 
   useEffect(()=>{
-   if(!inviteCode || !profileId){
+   if(!inviteCode){
     isLoading(false)
     return 
    } 
 
    const addUserInServer=async()=>{
      isLoading(true)
-     try{    
+     try{
+      const token=await getToken()    
       const response=await axios.put("http://localhost:3000/api/v1/server/invitecode-add-user",{
-       inviteCode,
-       profileId
+       inviteCode
+     },{
+      headers:{
+        'Authorization':`Bearer ${token}`,
+        'Content-Type':'application/json'
+      }
      })
       setInviteCodeUserData(response.data)
      }catch(err){
@@ -26,6 +33,6 @@ export const useInviteCodeUser=({inviteCode,profileId}:{inviteCode:string | unde
      }
    }
     addUserInServer()
-  ,[inviteCode,profileId]})
+  ,[inviteCode,getToken]})
   return {inviteCodeUserData,loading}
 }

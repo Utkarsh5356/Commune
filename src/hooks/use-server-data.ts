@@ -1,4 +1,5 @@
 import { useEffect,useState } from "react"
+import { useAuth } from "@clerk/clerk-react"
 import axios from "axios"
 
 export interface Channels{
@@ -38,6 +39,7 @@ export interface ServerData{
 }
 
 export const useServerData=({serverId}:{serverId:string | undefined})=>{
+  const {getToken}=useAuth()
   const [userServerData,setUserServerData]=useState<ServerData | null>(null)
   const [userServerDataLoader,setUserServerDataLoader]=useState(true)
   
@@ -47,7 +49,14 @@ export const useServerData=({serverId}:{serverId:string | undefined})=>{
    const getServerData=async()=>{
     try{
       setUserServerDataLoader(true)
-      const serverData=await axios.get<ServerData>(`http://localhost:3000/api/v1/server/data?serverId=${serverId}`)
+
+      const token=await getToken()
+      const serverData=await axios.get<ServerData>(`http://localhost:3000/api/v1/server/data?serverId=${serverId}`,{
+        headers:{
+          'Authorization':`Bearer ${token}`,
+          'Content-Type':'application/json'
+        }
+      })
       setUserServerData(serverData.data)
     }catch(err){
       console.error(err)
@@ -56,6 +65,6 @@ export const useServerData=({serverId}:{serverId:string | undefined})=>{
     }
    }
    getServerData()
-  },[serverId])
+  },[serverId,getToken])
   return {userServerData,userServerDataLoader}
 }

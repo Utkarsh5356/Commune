@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useAuth } from "@clerk/clerk-react"
 import { useModal } from "store/use-modal-store"
 import { Label } from "./ui/label"
 import { Input } from "./ui/input"
@@ -14,6 +15,7 @@ import {
 } from "./ui/dialog"
 
 export const InviteModal=()=>{
+  const {getToken}=useAuth()
   const { onOpen,isOpen,onClose,type,data }=useModal() 
   const { server }=data
   const [copied,setCopied]=useState(false)
@@ -36,9 +38,15 @@ export const InviteModal=()=>{
   const onNew=async()=>{
     try{
       setIsLoading(true)
-      const response=await axios.patch(`http://localhost:3000/api/v1/server/patch`,{
+
+      const token=await getToken()
+      const response=await axios.patch(`http://localhost:3000/api/v1/server/create-invitecode`,{
         serverId:server?.id,
-        profileId:server?.profileId
+      },{
+        headers:{
+         'Authorization':`Bearer ${token}`,
+         'Content-Type':'application/json'
+        }
       })
       onOpen("invite", { server:response.data })
     }catch(err){

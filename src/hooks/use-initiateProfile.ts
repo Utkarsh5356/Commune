@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useUser } from "@clerk/react-router";
 import { useNavigate } from "react-router";
 import { useAuth } from "@clerk/clerk-react"
@@ -17,6 +17,7 @@ interface profileResponse {
 export const useInitiateProfile=()=>{
   const {getToken}=useAuth()
   const{user,isLoaded}=useUser()
+  const [loading,isLoading]=useState(true)
   const navigate=useNavigate() 
   
   useEffect(()=>{
@@ -29,6 +30,8 @@ export const useInitiateProfile=()=>{
   useEffect(()=>{
     const getUserData=async ()=>{
     if(!user || !isLoaded) return 
+
+    isLoading(true)
       try{
       const token=await getToken()  
       await axios.post<profileResponse>("http://localhost:3000/api/v1/profile/upsert",{
@@ -44,10 +47,11 @@ export const useInitiateProfile=()=>{
       )
       }catch(createError){
         console.error("Profile creation failed",createError)
-        navigate("/")
+      }finally{
+        isLoading(false)
       }
     }
     getUserData()
   },[user,isLoaded,getToken])
-
+  return {loading}
 }
